@@ -116,7 +116,7 @@ const app = createApp({
     delProductModal = new bootstrap.Modal(
       document.getElementById('delProductModal')
     );
-    // 新增的 modal
+    // 新增和編輯的 modal
     productModal = new bootstrap.Modal(document.getElementById('productModal'));
   },
 });
