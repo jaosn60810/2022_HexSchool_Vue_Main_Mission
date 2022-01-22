@@ -10,8 +10,7 @@ const app = createApp({
       apiUrl: 'https://vue3-course-api.hexschool.io/v2',
       path: 'jasonchen',
       products: [],
-      tempProduct: {},
-      data: { imagesUrl: null },
+      tempProduct: { imagesUrl: null },
     };
   },
   methods: {
@@ -46,6 +45,8 @@ const app = createApp({
         .then((res) => {
           alert(res.data.message);
           delProductModal.hide();
+          // 清空 tempProduct
+          this.tempProduct = { imagesUrl: null };
           this.getProducts();
         })
         .catch((err) => {
@@ -54,12 +55,14 @@ const app = createApp({
     },
     addProduct() {
       const url = `${this.apiUrl}/api/${this.path}/admin/product`;
-      const addData = { data: this.data };
+      const addData = { data: this.tempProduct };
       axios
         .post(url, addData)
         .then((res) => {
           alert(res.data.message);
           productModal.hide();
+          // 清空 tempProduct
+          this.tempProduct = { imagesUrl: null };
           this.getProducts();
         })
         .catch((err) => {

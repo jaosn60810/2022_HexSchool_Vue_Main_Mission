@@ -97,24 +97,24 @@
                         type="text"
                         class="form-control"
                         placeholder="請輸入圖片連結"
-                        v-model="data.imageUrl"
+                        v-model="tempProduct.imageUrl"
                       />
                     </div>
                     <img
                       class="img-fluid"
-                      :src="data.imageUrl"
-                      :alt="data.title"
+                      :src="tempProduct.imageUrl"
+                      :alt="tempProduct.title"
                     />
                   </div>
 
                   <!-- 其他圖片 -->
                   <h3 class="mb-3">其他圖片</h3>
                   <!-- 有其他圖片出現的格式 -->
-                  <div v-if="data.imagesUrl">
+                  <div v-if="tempProduct.imagesUrl">
                     <!-- 其他圖片的 input 和圖片預覽 -->
                     <div
                       class="mb-2"
-                      v-for="(image,index) in data.imagesUrl"
+                      v-for="(image,index) in tempProduct.imagesUrl"
                       :key="image"
                     >
                       <div class="mb-3">
@@ -125,7 +125,7 @@
                           type="text"
                           class="form-control"
                           placeholder="請輸入圖片連結"
-                          v-model="data.imagesUrl[index]"
+                          v-model="tempProduct.imagesUrl[index]"
                         />
                       </div>
                       <img class="img-fluid" :src="image" />
@@ -133,12 +133,14 @@
                   </div>
 
                   <!-- 有其他圖片出現的按鈕 -->
-                  <div v-if="data.imagesUrl">
+                  <div v-if="tempProduct.imagesUrl">
                     <!-- 有其他圖片出現的新增按鈕 -->
-                    <div v-if="data.imagesUrl[data.imagesUrl.length - 1]">
+                    <div
+                      v-if="tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]"
+                    >
                       <button
                         class="btn btn-outline-primary btn-sm d-block w-100"
-                        @click="data.imagesUrl.push('')"
+                        @click="tempProduct.imagesUrl.push('')"
                       >
                         新增圖片
                       </button>
@@ -148,7 +150,7 @@
                     <div v-else>
                       <button
                         class="btn btn-outline-danger btn-sm d-block w-100"
-                        @click="data.imagesUrl.pop()"
+                        @click="tempProduct.imagesUrl.pop()"
                       >
                         刪除圖片
                       </button>
@@ -159,7 +161,7 @@
                   <div v-else>
                     <button
                       class="btn btn-outline-primary btn-sm d-block w-100"
-                      @click="data.imagesUrl = ['']"
+                      @click="tempProduct.imagesUrl = ['']"
                     >
                       新增圖片
                     </button>
@@ -174,7 +176,7 @@
                       type="text"
                       class="form-control"
                       placeholder="請輸入標題"
-                      v-model="data.title"
+                      v-model="tempProduct.title"
                     />
                   </div>
 
@@ -186,7 +188,7 @@
                         type="text"
                         class="form-control"
                         placeholder="請輸入分類"
-                        v-model="data.category"
+                        v-model="tempProduct.category"
                       />
                     </div>
                     <div class="mb-3 col-md-6">
@@ -196,7 +198,7 @@
                         type="text"
                         class="form-control"
                         placeholder="請輸入單位"
-                        v-model="data.unit"
+                        v-model="tempProduct.unit"
                       />
                     </div>
                   </div>
@@ -210,7 +212,7 @@
                         min="0"
                         class="form-control"
                         placeholder="請輸入原價"
-                        v-model.number="data.origin_price"
+                        v-model.number="tempProduct.origin_price"
                       />
                     </div>
                     <div class="mb-3 col-md-6">
@@ -221,7 +223,7 @@
                         min="0"
                         class="form-control"
                         placeholder="請輸入售價"
-                        v-model.number="data.price"
+                        v-model.number="tempProduct.price"
                       />
                     </div>
                   </div>
@@ -234,7 +236,7 @@
                       type="text"
                       class="form-control"
                       placeholder="請輸入產品描述"
-                      v-model="data.description"
+                      v-model="tempProduct.description"
                     >
                     </textarea>
                   </div>
@@ -245,7 +247,7 @@
                       type="text"
                       class="form-control"
                       placeholder="請輸入說明內容"
-                      v-model="data.content"
+                      v-model="tempProduct.content"
                     >
                     </textarea>
                   </div>
@@ -257,7 +259,7 @@
                         type="checkbox"
                         :true-value="1"
                         :false-value="0"
-                        v-model="data.is_enabled"
+                        v-model="tempProduct.is_enabled"
                       />
                       <label class="form-check-label" for="is_enabled"
                         >是否啟用</label
