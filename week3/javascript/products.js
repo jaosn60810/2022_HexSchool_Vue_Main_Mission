@@ -1,5 +1,7 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.esm-browser.js';
 
+let delProductModal = '';
+
 const app = createApp({
   data() {
     return {
@@ -34,16 +36,24 @@ const app = createApp({
           alert(err.data.message);
         });
     },
-    deleteProduct(product) {
-      const url = `${this.apiUrl}/api/${this.path}/admin/product/${product.id}`;
+    deleteProduct() {
+      const url = `${this.apiUrl}/api/${this.path}/admin/product/${this.tempProduct.id}`;
       axios
         .delete(url)
         .then((res) => {
+          alert(res.data.message);
+          delProductModal.hide();
           this.getProducts();
         })
         .catch((err) => {
           alert(err.data.message);
         });
+    },
+    openModal(type, product) {
+      this.tempProduct = product;
+      if (type === 'delete') {
+        delProductModal.show();
+      }
     },
   },
   mounted() {
@@ -56,6 +66,11 @@ const app = createApp({
     axios.defaults.headers.common['Authorization'] = token;
     // 確認是否登入
     this.checkLogin();
+
+    // 創建 bootstrap 實體
+    delProductModal = new bootstrap.Modal(
+      document.getElementById('delProductModal')
+    );
   },
 });
 
