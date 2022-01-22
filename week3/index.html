@@ -46,7 +46,11 @@
               </td>
               <td>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-outline-primary btn-sm">
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary btn-sm"
+                    @click="openModal('edit',product)"
+                  >
                     編輯
                   </button>
                   <button
@@ -63,7 +67,7 @@
         </table>
       </div>
 
-      <!-- 新增產品 modal -->
+      <!-- 新增和編輯產品 modal -->
       <div
         id="productModal"
         ref="productModal"
@@ -74,9 +78,11 @@
       >
         <div class="modal-dialog modal-xl">
           <div class="modal-content border-0">
+            <!-- modal header -->
             <div class="modal-header bg-dark text-white">
               <h5 id="productModalLabel" class="modal-title">
-                <span>新增產品</span>
+                <span v-if="isEdit">編輯產品</span>
+                <span v-else>新增產品</span>
               </h5>
               <button
                 type="button"
@@ -85,9 +91,13 @@
                 aria-label="Close"
               ></button>
             </div>
+
+            <!-- modal body -->
             <div class="modal-body">
               <div class="row">
+                <!-- body left -->
                 <div class="col-sm-4">
+                  <!-- 主要圖片 -->
                   <div class="mb-2">
                     <div class="mb-3">
                       <label for="imageUrl" class="form-label"
@@ -109,7 +119,7 @@
 
                   <!-- 其他圖片 -->
                   <h3 class="mb-3">其他圖片</h3>
-                  <!-- 有其他圖片出現的格式 -->
+                  <!-- 其他圖片的格式 -->
                   <div v-if="tempProduct.imagesUrl">
                     <!-- 其他圖片的 input 和圖片預覽 -->
                     <div
@@ -168,6 +178,7 @@
                   </div>
                 </div>
 
+                <!-- body right -->
                 <div class="col-sm-8">
                   <div class="mb-3">
                     <label for="title" class="form-label">標題</label>
@@ -269,6 +280,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- modal footer -->
             <div class="modal-footer">
               <button
                 type="button"
@@ -277,7 +290,24 @@
               >
                 取消
               </button>
-              <button type="button" class="btn btn-primary" @click="addProduct">
+
+              <!-- 編輯產品按鈕 -->
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="editProduct"
+                v-if="isEdit"
+              >
+                確認
+              </button>
+
+              <!-- 新增產品按鈕 -->
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="addProduct"
+                v-else
+              >
                 確認
               </button>
             </div>
@@ -296,6 +326,7 @@
       >
         <div class="modal-dialog">
           <div class="modal-content border-0">
+            <!-- modal header -->
             <div class="modal-header bg-danger text-white">
               <h5 id="delProductModalLabel" class="modal-title">
                 <span>刪除產品</span>
@@ -307,11 +338,15 @@
                 aria-label="Close"
               ></button>
             </div>
+
+            <!-- modal body -->
             <div class="modal-body">
               是否刪除
               <strong class="text-danger">{{tempProduct.title}}</strong>
               商品(刪除後將無法恢復)。
             </div>
+
+            <!-- modal footer -->
             <div class="modal-footer">
               <button
                 type="button"

@@ -11,6 +11,7 @@ const app = createApp({
       path: 'jasonchen',
       products: [],
       tempProduct: { imagesUrl: null },
+      isEdit: false,
     };
   },
   methods: {
@@ -69,12 +70,32 @@ const app = createApp({
           alert(err.data.message);
         });
     },
+    editProduct() {
+      const url = `${this.apiUrl}/api/${this.path}/admin/product/${this.tempProduct.id}`;
+      const editData = { data: this.tempProduct };
+      axios
+        .put(url, editData)
+        .then((res) => {
+          alert(res.data.message);
+          productModal.hide();
+          // 清空 tempProduct
+          this.tempProduct = { imagesUrl: null };
+          this.getProducts();
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
 
     openModal(type, product) {
       this.tempProduct = product;
       if (type === 'delete') {
         delProductModal.show();
       } else if (type === 'add') {
+        this.isEdit = false;
+        productModal.show();
+      } else if (type === 'edit') {
+        this.isEdit = true;
         productModal.show();
       }
     },
