@@ -12,8 +12,9 @@ const app = createApp({
   },
   methods: {
     login() {
+      const url = `${this.apiUrl}/admin/signin`;
       axios
-        .post(`${this.apiUrl}/admin/signin`, this.user)
+        .post(url, this.user)
         .then((res) => {
           // 將回傳的 res 裡的 token 和 expired 拿出
           const { token, expired } = res.data;

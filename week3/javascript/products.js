@@ -1,8 +1,8 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.esm-browser.js';
 
 // bootstrap 實體
-let delProductModal = '';
-let productModal = '';
+let delProductModal = null;
+let productModal = null;
 
 const app = createApp({
   data() {
@@ -88,7 +88,8 @@ const app = createApp({
     },
 
     openModal(type, product) {
-      this.tempProduct = product;
+      // 深層拷貝避免不明錯誤
+      this.tempProduct = JSON.parse(JSON.stringify(product));
       if (type === 'delete') {
         delProductModal.show();
       } else if (type === 'add') {
