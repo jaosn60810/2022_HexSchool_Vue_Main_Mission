@@ -1,6 +1,8 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.esm-browser.js';
 
+// bootstrap 實體
 let delProductModal = '';
+let productModal = '';
 
 const app = createApp({
   data() {
@@ -9,6 +11,7 @@ const app = createApp({
       path: 'jasonchen',
       products: [],
       tempProduct: {},
+      data: { imagesUrl: null },
     };
   },
   methods: {
@@ -49,10 +52,27 @@ const app = createApp({
           alert(err.data.message);
         });
     },
+    addProduct() {
+      const url = `${this.apiUrl}/api/${this.path}/admin/product`;
+      const addData = { data: this.data };
+      axios
+        .post(url, addData)
+        .then((res) => {
+          alert(res.data.message);
+          productModal.hide();
+          this.getProducts();
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+
     openModal(type, product) {
       this.tempProduct = product;
       if (type === 'delete') {
         delProductModal.show();
+      } else if (type === 'add') {
+        productModal.show();
       }
     },
   },
@@ -68,9 +88,12 @@ const app = createApp({
     this.checkLogin();
 
     // 創建 bootstrap 實體
+    // 刪除的 modal
     delProductModal = new bootstrap.Modal(
       document.getElementById('delProductModal')
     );
+    // 新增的 modal
+    productModal = new bootstrap.Modal(document.getElementById('productModal'));
   },
 });
 
