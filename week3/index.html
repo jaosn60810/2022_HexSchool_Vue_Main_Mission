@@ -123,7 +123,9 @@
                   <!-- 其他圖片 -->
                   <h3 class="mb-3">其他圖片</h3>
                   <!-- 其他圖片的格式 -->
-                  <div v-if="Array.isArray(tempProduct.imagesUrl)">
+                  <div
+                    v-if="Array.isArray(tempProduct.imagesUrl) && tempProduct.imagesUrl.length "
+                  >
                     <!-- 其他圖片的 input 和圖片預覽 -->
                     <div
                       class="mb-2"
@@ -146,7 +148,9 @@
                   </div>
 
                   <!-- 有其他圖片出現的按鈕 -->
-                  <div v-if=" Array.isArray(tempProduct.imagesUrl)">
+                  <div
+                    v-if=" Array.isArray(tempProduct.imagesUrl) && tempProduct.imagesUrl.length"
+                  >
                     <!-- 有其他圖片出現的新增按鈕 -->
                     <div
                       v-if="tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]"
