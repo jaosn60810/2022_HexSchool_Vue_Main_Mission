@@ -88,7 +88,7 @@ const app = createApp({
     },
 
     openModal(type, product) {
-      // 深層拷貝避免改動 modal 的值時，改到外面清單的值
+      // 使用深層拷貝避免改動 modal 的值時，改到外面清單的值
       this.tempProduct = JSON.parse(JSON.stringify(product));
       if (type === 'delete') {
         delProductModal.show();
