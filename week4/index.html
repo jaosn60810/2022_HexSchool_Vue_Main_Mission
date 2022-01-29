@@ -323,7 +323,16 @@
       </div>
 
       <!-- 刪除產品 modal-->
-      <div
+      <delete-product-modal
+        :temp-product="tempProduct"
+        @update="getProducts"
+      ></delete-product-modal>
+    </div>
+
+    <!-- x-template -->
+    <!-- 刪除產品 modal -->
+    <script type="text/x-template" id="delProductModal">
+        <div
         id="delProductModal"
         ref="delProductModal"
         class="modal fade"
@@ -331,7 +340,7 @@
         aria-labelledby="delProductModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog" >
           <div class="modal-content border-0">
             <!-- modal header -->
             <div class="modal-header bg-danger text-white">
@@ -373,7 +382,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </script>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js"

@@ -4,6 +4,8 @@ import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.
 let delProductModal = null;
 let productModal = null;
 
+//
+
 const app = createApp({
   data() {
     return {
@@ -113,12 +115,53 @@ const app = createApp({
     this.checkLogin();
 
     // 創建 bootstrap 實體
-    // 刪除的 modal
-    delProductModal = new bootstrap.Modal(
-      document.getElementById('delProductModal')
-    );
+
     // 新增和編輯的 modal
     productModal = new bootstrap.Modal(document.getElementById('productModal'));
+  },
+});
+
+// delete-product-modal
+app.component('delete-product-modal', {
+  template: '#delProductModal',
+  props: ['tempProduct'],
+  data() {
+    return {
+      apiUrl: 'https://vue3-course-api.hexschool.io/v2',
+      path: 'jasonchen',
+    };
+  },
+  mounted() {
+    // 創建 bootstrap 實體
+    // 刪除的 modal
+    delProductModal = new bootstrap.Modal(
+      document.getElementById('delProductModal', {
+        // esc 沒辦法關掉 modal
+        keyboard: false,
+        // 點選旁邊沒辦法關掉 modal
+        backdrop: 'static',
+      })
+    );
+  },
+  methods: {
+    deleteProduct() {
+      const url = `${this.apiUrl}/api/${this.path}/admin/product/${this.tempProduct.id}`;
+      axios
+        .delete(url)
+        .then((res) => {
+          alert(res.data.message);
+          this.hideModal();
+          // 將刪除成功的訊息 emit 到外面
+          this.$emit('update');
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+    // 把關閉 modal 拉出來做成 function，將功能拆分清楚
+    hideModal() {
+      delProductModal.hide();
+    },
   },
 });
 
