@@ -71,7 +71,77 @@
       </div>
 
       <!-- 新增和編輯產品 modal -->
-      <div
+      <update-product-modal
+        :temp-product="tempProduct"
+        :is-edit="isEdit"
+        @update="getProducts"
+      ></update-product-modal>
+
+      <!-- 刪除產品 modal-->
+      <delete-product-modal
+        :temp-product="tempProduct"
+        @update="getProducts"
+      ></delete-product-modal>
+    </div>
+
+    <!-- x-template -->
+    <!-- 刪除產品 modal -->
+    <script type="text/x-template" id="delProductModal">
+        <div
+        id="delProductModal"
+        ref="delProductModal"
+        class="modal fade"
+        tabindex="-1"
+        aria-labelledby="delProductModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" >
+          <div class="modal-content border-0">
+            <!-- modal header -->
+            <div class="modal-header bg-danger text-white">
+              <h5 id="delProductModalLabel" class="modal-title">
+                <span>刪除產品</span>
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <!-- modal body -->
+            <div class="modal-body">
+              是否刪除
+              <strong class="text-danger">{{tempProduct.title}}</strong>
+              商品(刪除後將無法恢復)。
+            </div>
+
+            <!-- modal footer -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                取消
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="deleteProduct"
+              >
+                確認刪除
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <!-- 新增和編輯產品 modal -->
+    <script type="text/x-template" id="productModal">
+            <div
         id="productModal"
         ref="productModal"
         class="modal fade"
@@ -321,69 +391,9 @@
           </div>
         </div>
       </div>
-
-      <!-- 刪除產品 modal-->
-      <delete-product-modal
-        :temp-product="tempProduct"
-        @update="getProducts"
-      ></delete-product-modal>
-    </div>
-
-    <!-- x-template -->
-    <!-- 刪除產品 modal -->
-    <script type="text/x-template" id="delProductModal">
-        <div
-        id="delProductModal"
-        ref="delProductModal"
-        class="modal fade"
-        tabindex="-1"
-        aria-labelledby="delProductModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" >
-          <div class="modal-content border-0">
-            <!-- modal header -->
-            <div class="modal-header bg-danger text-white">
-              <h5 id="delProductModalLabel" class="modal-title">
-                <span>刪除產品</span>
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-
-            <!-- modal body -->
-            <div class="modal-body">
-              是否刪除
-              <strong class="text-danger">{{tempProduct.title}}</strong>
-              商品(刪除後將無法恢復)。
-            </div>
-
-            <!-- modal footer -->
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                data-bs-dismiss="modal"
-              >
-                取消
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                @click="deleteProduct"
-              >
-                確認刪除
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </script>
 
+    <!-- 引入 js -->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js"
       integrity="sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=="

@@ -31,6 +31,9 @@ const app = createApp({
         });
     },
     getProducts() {
+      // 清空 tempProduct
+      this.tempProduct = { imagesUrl: [] };
+
       const url = `${this.apiUrl}/api/${this.path}/admin/products`;
       axios
         .get(url)
@@ -41,60 +44,14 @@ const app = createApp({
           alert(err.data.message);
         });
     },
-    deleteProduct() {
-      const url = `${this.apiUrl}/api/${this.path}/admin/product/${this.tempProduct.id}`;
-      axios
-        .delete(url)
-        .then((res) => {
-          alert(res.data.message);
-          delProductModal.hide();
-          // 清空 tempProduct
-          this.tempProduct = { imagesUrl: [] };
-          this.getProducts();
-        })
-        .catch((err) => {
-          alert(err.data.message);
-        });
-    },
-    addProduct() {
-      const url = `${this.apiUrl}/api/${this.path}/admin/product`;
-      const addData = { data: this.tempProduct };
-      axios
-        .post(url, addData)
-        .then((res) => {
-          alert(res.data.message);
-          productModal.hide();
-          // 清空 tempProduct
-          this.tempProduct = { imagesUrl: [] };
-          this.getProducts();
-        })
-        .catch((err) => {
-          alert(err.data.message);
-        });
-    },
-    editProduct() {
-      const url = `${this.apiUrl}/api/${this.path}/admin/product/${this.tempProduct.id}`;
-      const editData = { data: this.tempProduct };
-      axios
-        .put(url, editData)
-        .then((res) => {
-          alert(res.data.message);
-          productModal.hide();
-          // 清空 tempProduct
-          this.tempProduct = { imagesUrl: [] };
-          this.getProducts();
-        })
-        .catch((err) => {
-          alert(err.data.message);
-        });
-    },
-
     openModal(type, product) {
       // 使用深層拷貝避免改動 modal 的值時，改到外面清單的值
       this.tempProduct = JSON.parse(JSON.stringify(product));
       if (type === 'delete') {
         delProductModal.show();
       } else if (type === 'add') {
+        // 清空 tempProduct
+        this.tempProduct = { imagesUrl: [] };
         this.isEdit = false;
         productModal.show();
       } else if (type === 'edit') {
@@ -113,11 +70,6 @@ const app = createApp({
     axios.defaults.headers.common['Authorization'] = token;
     // 確認是否登入
     this.checkLogin();
-
-    // 創建 bootstrap 實體
-
-    // 新增和編輯的 modal
-    productModal = new bootstrap.Modal(document.getElementById('productModal'));
   },
 });
 
@@ -161,6 +113,65 @@ app.component('delete-product-modal', {
     // 把關閉 modal 拉出來做成 function，將功能拆分清楚
     hideModal() {
       delProductModal.hide();
+    },
+  },
+});
+
+// update-product-modal
+app.component('update-product-modal', {
+  template: '#productModal',
+  props: ['tempProduct', 'isEdit'],
+  data() {
+    return {
+      apiUrl: 'https://vue3-course-api.hexschool.io/v2',
+      path: 'jasonchen',
+    };
+  },
+  mounted() {
+    // 創建 bootstrap 實體
+    // 新增和編輯的 modal
+    productModal = new bootstrap.Modal(
+      document.getElementById('productModal'),
+      {
+        // esc 沒辦法關掉 modal
+        keyboard: false,
+        // 點選旁邊沒辦法關掉 modal
+        backdrop: 'static',
+      }
+    );
+  },
+  methods: {
+    addProduct() {
+      const url = `${this.apiUrl}/api/${this.path}/admin/product`;
+      const addData = { data: this.tempProduct };
+      axios
+        .post(url, addData)
+        .then((res) => {
+          alert(res.data.message);
+          this.hideModal();
+          this.$emit('update');
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+    editProduct() {
+      const url = `${this.apiUrl}/api/${this.path}/admin/product/${this.tempProduct.id}`;
+      const editData = { data: this.tempProduct };
+      axios
+        .put(url, editData)
+        .then((res) => {
+          alert(res.data.message);
+          this.hideModal();
+          this.$emit('update');
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+    // 把關閉 modal 拉出來做成 function，將功能拆分清楚
+    hideModal() {
+      productModal.hide();
     },
   },
 });
