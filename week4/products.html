@@ -97,7 +97,7 @@
         <ul class="pagination">
           <!-- 上一頁符號 -->
           <li class="page-item" :class="{disabled : !pagination.has_pre}">
-            <a class="page-link" href="#" aria-label="Previous" @click="$emit('update',pagination.current_page-1)">
+            <a class="page-link" href="#" aria-label="Previous" @click.prevent="$emit('update',pagination.current_page-1)">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
@@ -109,12 +109,12 @@
             :key="num"
             :class="{active : num === pagination.current_page}"
           >
-            <a class="page-link" href="#" @click="$emit('update',num)">{{num}}</a>
+            <a class="page-link" href="#" @click.prevent="$emit('update',num)">{{num}}</a>
           </li>
 
           <!-- 下一頁符號 -->
           <li class="page-item" :class="{disabled : !pagination.has_next}">
-            <a class="page-link" href="#" aria-label="Next" @click="$emit('update',pagination.current_page+1)">
+            <a class="page-link" href="#" aria-label="Next" @click.prevent="$emit('update',pagination.current_page+1)">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
