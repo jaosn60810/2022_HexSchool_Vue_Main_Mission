@@ -94,7 +94,7 @@ const app = createApp({
 // 分頁元件
 app.component('products-pagination', {
   template: '#productsPagination',
-  props: ['pagination', 'nowPage'],
+  props: ['pagination'],
 });
 
 // delete-product-modal

@@ -72,7 +72,6 @@
         <!-- 分頁元件 -->
         <products-pagination
           :pagination="pagination"
-          :now-page="nowPage"
           @update="changePage"
         ></products-pagination>
       </div>
@@ -98,7 +97,7 @@
         <ul class="pagination">
           <!-- 上一頁符號 -->
           <li class="page-item" :class="{disabled : !pagination.has_pre}">
-            <a class="page-link" href="#" aria-label="Previous" @click="$emit('update',nowPage-1)">
+            <a class="page-link" href="#" aria-label="Previous" @click="$emit('update',pagination.current_page-1)">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
@@ -108,14 +107,14 @@
             class="page-item"
             v-for="num in pagination.total_pages"
             :key="num"
-            :class="{active : num === nowPage}"
+            :class="{active : num === pagination.current_page}"
           >
             <a class="page-link" href="#" @click="$emit('update',num)">{{num}}</a>
           </li>
 
           <!-- 下一頁符號 -->
           <li class="page-item" :class="{disabled : !pagination.has_next}">
-            <a class="page-link" href="#" aria-label="Next" @click="$emit('update',nowPage+1)">
+            <a class="page-link" href="#" aria-label="Next" @click="$emit('update',pagination.current_page+1)">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
