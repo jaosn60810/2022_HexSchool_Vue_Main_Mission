@@ -29,7 +29,7 @@ const app = createApp({
         .catch((err) => {
           alert(err.data.message);
           // 失敗則重新導回登入頁面
-          window.location = 'login.html';
+          window.location = 'index.html';
         });
     },
     getProducts() {

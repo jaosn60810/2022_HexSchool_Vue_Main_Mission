@@ -23,7 +23,7 @@ const app = createApp({
           expires=${new Date(expired)};`;
 
           // 切換頁面
-          window.location = 'index.html';
+          window.location = 'products.html';
         })
         .catch((err) => alert(err.data.message));
     },
