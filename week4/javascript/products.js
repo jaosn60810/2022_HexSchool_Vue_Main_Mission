@@ -14,6 +14,8 @@ const app = createApp({
       products: [],
       tempProduct: { imagesUrl: [] },
       isEdit: false,
+      pagination: {},
+      nowPage: 1,
     };
   },
   methods: {
@@ -34,15 +36,21 @@ const app = createApp({
       // 清空 tempProduct
       this.tempProduct = { imagesUrl: [] };
 
-      const url = `${this.apiUrl}/api/${this.path}/admin/products`;
+      const url = `${this.apiUrl}/api/${this.path}/admin/products?page=${this.nowPage}`;
       axios
         .get(url)
         .then((res) => {
           this.products = res.data.products;
+          this.pagination = res.data.pagination;
+          this.nowPage = res.data.pagination.current_page;
         })
         .catch((err) => {
           alert(err.data.message);
         });
+    },
+    changePage(page) {
+      this.nowPage = page;
+      this.getProducts();
     },
     openModal(type, product) {
       // 使用深層拷貝避免改動 modal 的值時，改到外面清單的值
