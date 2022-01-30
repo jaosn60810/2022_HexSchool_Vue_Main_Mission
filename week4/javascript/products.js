@@ -49,6 +49,16 @@ const app = createApp({
         });
     },
     changePage(page) {
+      // 第一頁不能往前
+      if (page <= 1) {
+        page = 1;
+      }
+
+      // 最後一頁不能往後
+      if (page >= this.pagination.total_pages) {
+        page = this.pagination.total_pages;
+      }
+
       this.nowPage = page;
       this.getProducts();
     },
@@ -79,6 +89,12 @@ const app = createApp({
     // 確認是否登入
     this.checkLogin();
   },
+});
+
+// 分頁元件
+app.component('products-pagination', {
+  template: '#productsPagination',
+  props: ['pagination', 'nowPage'],
 });
 
 // delete-product-modal
