@@ -9,10 +9,12 @@ const app = Vue.createApp({
     return {
       products: [],
       tempProduct: {},
+      cart: {},
     };
   },
   mounted() {
     this.getProducts();
+    this.getCarts();
   },
   methods: {
     getProducts() {
@@ -21,6 +23,50 @@ const app = Vue.createApp({
         .get(url)
         .then((res) => {
           this.products = res.data.products;
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+    getCarts() {
+      const url = `${apiUrl}/v2/api/${apiPath}/cart`;
+      axios
+        .get(url)
+        .then((res) => {
+          this.cart = res.data.data;
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+    addToCart(productId, productNum = 1) {
+      const url = `${apiUrl}/v2/api/${apiPath}/cart`;
+      const data = {
+        product_id: productId,
+        qty: productNum,
+      };
+      axios
+        .post(url, { data })
+        .then((res) => {
+          alert(res.data.message);
+          this.getCarts();
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
+    },
+    removeFromCart(productId) {
+      let url = `${apiUrl}/v2/api/${apiPath}/cart/${productId}`;
+
+      if (productId === 'all') {
+        url = `${apiUrl}/v2/api/${apiPath}/carts`;
+      }
+
+      axios
+        .delete(url)
+        .then((res) => {
+          alert(res.data.message);
+          this.getCarts();
         })
         .catch((err) => {
           alert(err.data.message);
