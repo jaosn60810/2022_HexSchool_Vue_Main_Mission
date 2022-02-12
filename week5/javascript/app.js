@@ -10,6 +10,7 @@ const app = Vue.createApp({
       products: [],
       tempProduct: {},
       cart: {},
+      isDisabled: false,
     };
   },
   mounted() {
@@ -55,10 +56,34 @@ const app = Vue.createApp({
           alert(err.data.message);
         });
     },
-    removeFromCart(productId) {
-      let url = `${apiUrl}/v2/api/${apiPath}/cart/${productId}`;
+    editProductNumInCart(cartId, productId, productNum) {
+      // 鎖住輸入欄
+      this.isDisabled = true;
 
-      if (productId === 'all') {
+      const url = `${apiUrl}/v2/api/${apiPath}/cart/${cartId}`;
+      const data = {
+        product_id: productId,
+        qty: productNum,
+      };
+      axios
+        .put(url, { data })
+        .then((res) => {
+          alert(res.data.message);
+          this.getCarts();
+
+          this.isDisabled = false;
+        })
+        .catch((err) => {
+          alert(err.data.message);
+          this.getCarts();
+
+          this.isDisabled = false;
+        });
+    },
+    removeFromCart(cartId) {
+      let url = `${apiUrl}/v2/api/${apiPath}/cart/${cartId}`;
+
+      if (cartId === 'all') {
         url = `${apiUrl}/v2/api/${apiPath}/carts`;
       }
 

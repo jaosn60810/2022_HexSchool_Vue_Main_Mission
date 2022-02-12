@@ -124,7 +124,9 @@
                           min="1"
                           type="number"
                           class="form-control"
-                          :value="item.qty"
+                          v-model="item.qty"
+                          @blur="editProductNumInCart(item.id,item.product_id,item.qty)"
+                          :disabled="isDisabled"
                         />
                         <span class="input-group-text" id="basic-addon2"
                           >{{ item.product.unit}}</span
