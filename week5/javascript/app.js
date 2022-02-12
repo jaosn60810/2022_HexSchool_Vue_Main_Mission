@@ -82,6 +82,11 @@ const app = Vue.createApp({
 app.component('show-product-modal', {
   template: '#userProductModal',
   props: ['tempProduct'],
+  data() {
+    return {
+      productNum: 1,
+    };
+  },
   mounted() {
     showProductModal = new bootstrap.Modal(
       document.getElementById('productModal', {
@@ -91,6 +96,12 @@ app.component('show-product-modal', {
         backdrop: 'static',
       })
     );
+  },
+  methods: {
+    addToCart() {
+      this.$emit('add-to-cart', this.tempProduct.id, this.productNum);
+      showProductModal.hide();
+    },
   },
 });
 

@@ -24,7 +24,10 @@
       <div class="container">
         <div class="mt-4">
           <!-- 產品Modal -->
-          <show-product-modal :temp-product="tempProduct"></show-product-modal>
+          <show-product-modal
+            :temp-product="tempProduct"
+            @add-to-cart="addToCart"
+          ></show-product-modal>
           <!-- 產品Modal -->
 
           <table class="table align-middle">
@@ -272,8 +275,8 @@
                   <div class="h5">現在只要 {{ tempProduct.price }} 元</div>
                   <div>
                     <div class="input-group">
-                      <input type="number" class="form-control" min="1" />
-                      <button type="button" class="btn btn-primary">
+                      <input type="number" class="form-control" min="1" v-model.number="productNum" />
+                      <button type="button" class="btn btn-primary" @click="addToCart">
                         加入購物車
                       </button>
                     </div>
