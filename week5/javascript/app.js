@@ -9,7 +9,8 @@ const app = Vue.createApp({
       products: [],
       tempProduct: {},
       cart: {},
-      isDisabled: false,
+      // 判斷是否在 loading 狀態
+      loadingItem: '',
     };
   },
   mounted() {
@@ -28,6 +29,24 @@ const app = Vue.createApp({
           alert(err.data.message);
         });
     },
+    getProduct(id) {
+      const url = `${apiUrl}/api/${apiPath}/product/${id}`;
+
+      this.loadingItem = id;
+
+      axios
+        .get(url)
+        .then((response) => {
+          this.tempProduct = response.data.product;
+          this.$refs.showProductModal.openModal();
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        })
+        .finally(() => {
+          this.loadingItem = '';
+        });
+    },
     getCarts() {
       const url = `${apiUrl}/v2/api/${apiPath}/cart`;
       axios
@@ -41,6 +60,9 @@ const app = Vue.createApp({
     },
     addToCart(productId, productNum = 1) {
       const url = `${apiUrl}/v2/api/${apiPath}/cart`;
+
+      this.loadingItem = productId;
+
       const data = {
         product_id: productId,
         qty: productNum,
@@ -55,30 +77,28 @@ const app = Vue.createApp({
         })
         .finally(() => {
           this.getCarts();
+          this.loadingItem = '';
         });
     },
-    editProductNumInCart(cartId, productId, productNum) {
-      // 鎖住輸入欄
-      this.isDisabled = true;
+    editProductNumInCart(cart) {
+      this.loadingItem = cart.id;
 
-      const url = `${apiUrl}/v2/api/${apiPath}/cart/${cartId}`;
+      const url = `${apiUrl}/v2/api/${apiPath}/cart/${cart.id}`;
       const data = {
-        product_id: productId,
-        qty: productNum,
+        product_id: cart.product_id,
+        qty: cart.qty,
       };
       axios
         .put(url, { data })
         .then((res) => {
           alert(res.data.message);
-          this.getCarts();
-
-          this.isDisabled = false;
         })
         .catch((err) => {
           alert(err.data.message);
+        })
+        .finally(() => {
+          this.loadingItem = '';
           this.getCarts();
-
-          this.isDisabled = false;
         });
     },
     removeFromCart(cartId) {
@@ -88,19 +108,20 @@ const app = Vue.createApp({
         url = `${apiUrl}/v2/api/${apiPath}/carts`;
       }
 
+      this.loadingItem = cartId;
+
       axios
         .delete(url)
         .then((res) => {
           alert(res.data.message);
-          this.getCarts();
         })
         .catch((err) => {
           alert(err.data.message);
+        })
+        .finally(() => {
+          this.loadingItem = '';
+          this.getCarts();
         });
-    },
-    openModal(product) {
-      this.tempProduct = { ...product };
-      this.$refs.showProductModal.openModal();
     },
   },
 });
