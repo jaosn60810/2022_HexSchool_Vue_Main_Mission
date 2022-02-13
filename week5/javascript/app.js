@@ -1,8 +1,7 @@
+import showProductModal from './showProductModal.js';
+
 const apiUrl = 'https://vue3-course-api.hexschool.io';
 const apiPath = 'jasonchen';
-
-// bootstrap 實體
-let showProductModal = null;
 
 const app = Vue.createApp({
   data() {
@@ -50,10 +49,12 @@ const app = Vue.createApp({
         .post(url, { data })
         .then((res) => {
           alert(res.data.message);
-          this.getCarts();
         })
         .catch((err) => {
           alert(err.data.message);
+        })
+        .finally(() => {
+          this.getCarts();
         });
     },
     editProductNumInCart(cartId, productId, productNum) {
@@ -99,35 +100,11 @@ const app = Vue.createApp({
     },
     openModal(product) {
       this.tempProduct = { ...product };
-      showProductModal.show();
+      this.$refs.showProductModal.openModal();
     },
   },
 });
 
-app.component('show-product-modal', {
-  template: '#userProductModal',
-  props: ['tempProduct'],
-  data() {
-    return {
-      productNum: 1,
-    };
-  },
-  mounted() {
-    showProductModal = new bootstrap.Modal(
-      document.getElementById('productModal', {
-        // esc 沒辦法關掉 modal
-        keyboard: false,
-        // 點選旁邊沒辦法關掉 modal
-        backdrop: 'static',
-      })
-    );
-  },
-  methods: {
-    addToCart() {
-      this.$emit('add-to-cart', this.tempProduct.id, this.productNum);
-      showProductModal.hide();
-    },
-  },
-});
+app.component('show-product-modal', showProductModal);
 
 app.mount('#app');

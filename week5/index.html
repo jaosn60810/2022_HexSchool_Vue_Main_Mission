@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>week5</title>
+    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -252,7 +253,7 @@
 
     <!-- x-template -->
     <script type="text/x-template" id="userProductModal">
-       <div
+        <div
         class="modal fade"
         id="productModal"
         tabindex="-1"
@@ -289,15 +290,26 @@
                   >
                   <p>商品描述：{{ tempProduct.title }}</p>
                   <p>商品內容：{{ tempProduct.description }}</p>
-                  <div class="h5" v-if="!product.price">{{ product.origin_price }} 元</div>
+                  <div class="h5" v-if="!tempProduct.price">
+                    {{ tempProduct.origin_price }} 元
+                  </div>
                   <div v-else>
                     <del class="h6">原價 {{ tempProduct.origin_price}} 元</del>
                     <div class="h5">現在只要 {{ tempProduct.price }} 元</div>
                   </div>
                   <div>
                     <div class="input-group">
-                      <input type="number" class="form-control" min="1" v-model.number="productNum" />
-                      <button type="button" class="btn btn-primary" @click="addToCart">
+                      <input
+                        type="number"
+                        class="form-control"
+                        min="1"
+                        v-model.number="productNum"
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="addToCart"
+                      >
                         加入購物車
                       </button>
                     </div>
@@ -310,6 +322,7 @@
         </div>
       </div>
     </script>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js"
       integrity="sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=="
