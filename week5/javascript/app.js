@@ -1,5 +1,26 @@
 import showProductModal from './showProductModal.js';
 
+// VeeValiadation
+const { defineRule, Form, Field, ErrorMessage, configure } = VeeValidate;
+const { required, email, min, max } = VeeValidateRules;
+const { localize, loadLocaleFromURL } = VeeValidateI18n;
+
+// 定義規則
+defineRule('required', required);
+defineRule('email', email);
+defineRule('min', min);
+defineRule('max', max);
+
+// 加入多國語系外部資源
+loadLocaleFromURL(
+  'https://unpkg.com/@vee-validate/i18n@4.1.0/dist/locale/zh_TW.json'
+);
+
+// Activate the locale
+configure({
+  generateMessage: localize('zh_TW'),
+});
+
 const apiUrl = 'https://vue3-course-api.hexschool.io';
 const apiPath = 'jasonchen';
 
@@ -11,7 +32,21 @@ const app = Vue.createApp({
       cart: {},
       // 判斷是否在 loading 狀態
       loadingItem: '',
+      form: {
+        user: {
+          name: '',
+          email: '',
+          tel: '',
+          address: '',
+        },
+        message: '',
+      },
     };
+  },
+  components: {
+    VForm: Form,
+    VField: Field,
+    ErrorMessage: ErrorMessage,
   },
   mounted() {
     this.getProducts();
@@ -120,6 +155,24 @@ const app = Vue.createApp({
         })
         .finally(() => {
           this.loadingItem = '';
+          this.getCarts();
+        });
+    },
+    createOrder() {
+      const url = `${apiUrl}/v2/api/${apiPath}/order`;
+      const order = this.form;
+
+      axios
+        .post(url, { data: order })
+        .then((res) => {
+          alert(res.data.message);
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        })
+        .finally(() => {
+          // 清空表單
+          this.$refs.form.resetForm();
           this.getCarts();
         });
     },
