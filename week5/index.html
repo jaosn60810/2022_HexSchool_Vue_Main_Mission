@@ -103,6 +103,7 @@
               class="btn btn-outline-danger"
               type="button"
               @click="removeFromCart('all')"
+              :disabled="cart.carts.length === 0"
             >
               清空購物車
             </button>
@@ -273,7 +274,13 @@
               ></textarea>
             </div>
             <div class="text-end">
-              <button type="submit" class="btn btn-danger">送出訂單</button>
+              <button
+                type="submit"
+                class="btn btn-danger"
+                :disabled="Object.keys(errors).length > 0 || cart.carts.length === 0"
+              >
+                送出訂單
+              </button>
             </div>
           </v-form>
         </div>

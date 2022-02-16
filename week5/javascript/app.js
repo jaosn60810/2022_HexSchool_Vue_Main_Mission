@@ -29,7 +29,9 @@ const app = Vue.createApp({
     return {
       products: [],
       tempProduct: {},
-      cart: {},
+      cart: {
+        carts: [],
+      },
       // 判斷是否在 loading 狀態
       loadingItem: '',
       form: {
