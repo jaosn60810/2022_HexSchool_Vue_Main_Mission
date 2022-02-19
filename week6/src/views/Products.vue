@@ -65,26 +65,36 @@
       </tbody>
     </table>
     <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
+
+    <UserProductModal
+      ref="userProductModal"
+      :product="product"
+      @add-to-cart="addToCart"
+    ></UserProductModal>
   </div>
 </template>
 
 <script>
 import Pagination from '@/components/Pagination.vue';
+import UserProductModal from '@/components/UserProductModal.vue';
 
 export default {
   data() {
     return {
+      product: {},
       products: [],
       pagination: {},
     };
   },
-  components: { Pagination },
+  components: {
+    Pagination,
+    UserProductModal,
+  },
   mounted() {
     this.getProducts();
   },
   methods: {
     getProducts(page = 1) {
-      console.log(page);
       const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/products?page=${page}`;
       this.$http
         .get(api)
@@ -92,6 +102,41 @@ export default {
           if (res.data.success) {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
+          }
+        })
+        .catch((err) => {
+          console.dir(err);
+        });
+    },
+    getProduct(id) {
+      const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/product/${id}`;
+      this.$http
+        .get(api)
+        .then((res) => {
+          if (res.data.success) {
+            this.product = res.data.product;
+            this.showModal();
+          }
+        })
+        .catch((err) => {
+          console.dir(err);
+        });
+    },
+    showModal() {
+      this.$refs.userProductModal.showModal();
+    },
+    hideModal() {
+      this.$refs.userProductModal.hideModal();
+    },
+    addToCart(id, qty = 1) {
+      const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart`;
+      const data = { product_id: id, qty };
+      this.$http
+        .post(api, { data })
+        .then((res) => {
+          if (res.data.success) {
+            alert(res.data.message);
+            this.hideModal();
           }
         })
         .catch((err) => {
