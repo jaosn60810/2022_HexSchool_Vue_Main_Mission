@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>This is 產品列表頁面</h1>
 
     <table class="table align-middle">
@@ -64,10 +64,13 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
   </div>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination.vue';
+
 export default {
   data() {
     return {
@@ -75,12 +78,14 @@ export default {
       pagination: {},
     };
   },
+  components: { Pagination },
   mounted() {
     this.getProducts();
   },
   methods: {
-    getProducts() {
-      const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/products`;
+    getProducts(page = 1) {
+      console.log(page);
+      const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/products?page=${page}`;
       this.$http
         .get(api)
         .then((res) => {
