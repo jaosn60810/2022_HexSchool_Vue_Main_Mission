@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>This is 產品列表頁面</h1>
-
+    <Loading :active="isLoading" :z-index="1060"></Loading>
     <table class="table align-middle">
       <thead>
         <tr>
@@ -88,6 +88,7 @@ export default {
       products: [],
       pagination: {},
       loadingItem: '',
+      isLoading: false,
     };
   },
   components: {
@@ -99,6 +100,9 @@ export default {
   },
   methods: {
     getProducts(page = 1) {
+      // 整頁 loading，開啟效果
+      this.isLoading = true;
+
       const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/products?page=${page}`;
       this.$http
         .get(api)
@@ -106,6 +110,9 @@ export default {
           if (res.data.success) {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
+
+            // 整頁 loading，關閉效果
+            this.isLoading = false;
           }
         })
         .catch((err) => {
@@ -115,6 +122,8 @@ export default {
     getProduct(id) {
       // 需要 loading 效果的商品 id，開啟效果
       this.loadingItem = id;
+      // 整頁 loading，開啟效果
+      this.isLoading = true;
 
       const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/product/${id}`;
       this.$http
@@ -126,6 +135,8 @@ export default {
 
             // 需要 loading 效果的商品 id，關閉效果
             this.loadingItem = '';
+            // 整頁 loading，關閉效果
+            this.isLoading = false;
           }
         })
         .catch((err) => {
@@ -141,6 +152,8 @@ export default {
     addToCart(id, qty = 1) {
       // 需要 loading 效果的商品 id，開啟效果
       this.loadingItem = id;
+      // 整頁 loading，開啟效果
+      this.isLoading = true;
 
       const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart`;
       const data = { product_id: id, qty };
@@ -150,6 +163,11 @@ export default {
           if (res.data.success) {
             alert(res.data.message);
             this.hideModal();
+
+            // 需要 loading 效果的商品 id，關閉效果
+            this.loadingItem = '';
+            // 整頁 loading，關閉效果
+            this.isLoading = false;
           }
         })
         .catch((err) => {
