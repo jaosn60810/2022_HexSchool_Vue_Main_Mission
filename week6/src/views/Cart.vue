@@ -1,6 +1,8 @@
 <template>
   <div class="about">
     <Loading :active="isLoading"></Loading>
+
+    <!-- 購物車列表 start -->
     <h1>This is 購物車頁面</h1>
     <div class="container">
       <div class="row justify-content-center">
@@ -14,6 +16,7 @@
                 <th>單價</th>
               </tr>
             </thead>
+
             <tbody>
               <template v-if="cart.carts">
                 <tr v-for="item in cart.carts" :key="item.id">
@@ -53,6 +56,7 @@
                 </tr>
               </template>
             </tbody>
+
             <tfoot>
               <tr>
                 <td colspan="3" class="text-end">總計</td>
@@ -66,9 +70,10 @@
           </table>
         </div>
       </div>
+      <!-- 購物車列表 end -->
 
       <!-- 表單 start -->
-      <!-- <div class="my-5 row justify-content-center">
+      <div class="my-5 row justify-content-center">
         <Form
           ref="form"
           class="col-md-6"
@@ -110,11 +115,11 @@
             <Field
               id="tel"
               name="電話"
-              type="text"
+              type="tel"
               class="form-control"
               :class="{ 'is-invalid': errors['電話'] }"
               placeholder="請輸入電話"
-              rules="required"
+              rules="required|numeric|min:8|max:10"
               v-model="form.user.tel"
             ></Field>
             <ErrorMessage name="電話" class="invalid-feedback"></ErrorMessage>
@@ -147,10 +152,18 @@
             ></textarea>
           </div>
           <div class="text-end">
-            <button type="submit" class="btn btn-danger">送出訂單</button>
+            <button
+              type="submit"
+              class="btn btn-danger"
+              :disabled="
+                Object.keys(errors).length > 0 || cart.carts.length === 0
+              "
+            >
+              送出訂單
+            </button>
           </div>
         </Form>
-      </div> -->
+      </div>
       <!-- 表單 end -->
     </div>
   </div>
@@ -163,7 +176,9 @@ export default {
     return {
       loadingItem: '',
       isLoading: false,
-      cart: {},
+      cart: {
+        carts: [],
+      },
       form: {
         user: {
           name: '',
@@ -189,15 +204,16 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
-
-            // 整頁 loading，關閉效果
-            this.isLoading = false;
           } else {
             alert(res.data.message);
           }
         })
         .catch((err) => {
           alert(err.data.message);
+        })
+        .finally(() => {
+          // 整頁 loading，關閉效果
+          this.isLoading = false;
         });
     },
     removeCartItem(id) {
@@ -211,20 +227,43 @@ export default {
         .delete(api)
         .then((res) => {
           alert(res.data.message);
-
-          // 需要 loading 效果的商品 id，關閉效果
-          this.loadingItem = '';
-          // 整頁 loading，關閉效果
-          this.isLoading = false;
         })
         .catch((err) => {
           alert(err.data.message);
         })
         .finally(() => {
           this.getCart();
+          // 需要 loading 效果的商品 id，關閉效果
+          this.loadingItem = '';
+          // 整頁 loading，關閉效果
+          this.isLoading = false;
         });
     },
-    createOrder() {},
+    createOrder() {
+      // 整頁 loading，開啟效果
+      this.isLoading = true;
+
+      const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/order`;
+      this.$http
+        .post(api, { data: this.form })
+        .then((res) => {
+          alert(res.data.message);
+
+          // 如果成功送出表單，清空表單
+          if (res.data.success) {
+            this.$refs.form.resetForm();
+          }
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        })
+        .finally(() => {
+          // 清空購物車
+          this.getCart();
+          // 整頁 loading，關閉效果
+          this.isLoading = false;
+        });
+    },
   },
 };
 </script>
