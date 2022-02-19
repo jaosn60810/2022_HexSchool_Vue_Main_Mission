@@ -64,8 +64,11 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- 分頁元件 -->
     <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
 
+    <!-- 查看更多 modal -->
     <UserProductModal
       ref="userProductModal"
       :product="product"
@@ -84,6 +87,7 @@ export default {
       product: {},
       products: [],
       pagination: {},
+      loadingItem: '',
     };
   },
   components: {
@@ -105,10 +109,13 @@ export default {
           }
         })
         .catch((err) => {
-          console.dir(err);
+          alert(err.data.message);
         });
     },
     getProduct(id) {
+      // 需要 loading 效果的商品 id，開啟效果
+      this.loadingItem = id;
+
       const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/product/${id}`;
       this.$http
         .get(api)
@@ -116,10 +123,13 @@ export default {
           if (res.data.success) {
             this.product = res.data.product;
             this.showModal();
+
+            // 需要 loading 效果的商品 id，關閉效果
+            this.loadingItem = '';
           }
         })
         .catch((err) => {
-          console.dir(err);
+          alert(err.data.message);
         });
     },
     showModal() {
@@ -129,6 +139,9 @@ export default {
       this.$refs.userProductModal.hideModal();
     },
     addToCart(id, qty = 1) {
+      // 需要 loading 效果的商品 id，開啟效果
+      this.loadingItem = id;
+
       const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart`;
       const data = { product_id: id, qty };
       this.$http
@@ -140,7 +153,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.dir(err);
+          alert(err.data.message);
         });
     },
   },
