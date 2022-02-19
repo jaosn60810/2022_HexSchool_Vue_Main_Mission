@@ -82,6 +82,7 @@ import Pagination from '@/components/Pagination.vue';
 import UserProductModal from '@/components/UserProductModal.vue';
 
 export default {
+  name: 'Products',
   data() {
     return {
       product: {},
@@ -113,6 +114,8 @@ export default {
 
             // 整頁 loading，關閉效果
             this.isLoading = false;
+          } else {
+            alert(res.data.message);
           }
         })
         .catch((err) => {
@@ -137,6 +140,8 @@ export default {
             this.loadingItem = '';
             // 整頁 loading，關閉效果
             this.isLoading = false;
+          } else {
+            alert(res.data.message);
           }
         })
         .catch((err) => {
@@ -168,6 +173,8 @@ export default {
             this.loadingItem = '';
             // 整頁 loading，關閉效果
             this.isLoading = false;
+          } else {
+            alert(res.data.message);
           }
         })
         .catch((err) => {
