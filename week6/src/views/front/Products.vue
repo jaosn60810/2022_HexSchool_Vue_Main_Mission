@@ -197,6 +197,11 @@ export default {
       this.$refs.userProductModal.hideModal();
     },
     addToCart(id, qty = 1) {
+      if (qty < 1) {
+        alert('請輸入數量');
+        return;
+      }
+
       // 需要 loading 效果的商品 id，開啟效果
       this.loadingItem = id;
       // 整頁 loading，開啟效果
