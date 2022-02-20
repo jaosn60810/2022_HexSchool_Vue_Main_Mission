@@ -8,18 +8,35 @@
       <div class="row row-cols-1 row-cols-lg-4 g-3">
         <div class="col" v-for="product in products" :key="product.id">
           <div class="card h-100">
-            <img :src="product.imageUrl" class="card-img-top" alt="..." />
+            <img
+              :src="product.imageUrl"
+              class="card-img-top"
+              alt="product.title"
+            />
             <div class="card-body">
               <h5 class="card-title">{{ product.title }}</h5>
               <p class="card-text">
                 {{ product.description }}
               </p>
+            </div>
+            <div class="card-footer d-flex justify-content-around">
               <router-link
                 :to="`/product/${product.id}`"
-                class="btn btn-primary"
-              >
-                Go somewhere
+                class="btn btn-outline-primary"
+                >產品頁面
               </router-link>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                @click="addToCart(product.id)"
+                :disabled="loadingItem === product.id"
+              >
+                <i
+                  class="fas fa-spinner fa-pulse"
+                  v-if="loadingItem === product.id"
+                ></i>
+                加到購物車
+              </button>
             </div>
           </div>
         </div>

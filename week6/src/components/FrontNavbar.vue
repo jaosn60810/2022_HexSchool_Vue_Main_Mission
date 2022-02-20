@@ -52,10 +52,14 @@ export default {
   },
   methods: {
     getCart() {
+      const api = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart`;
       this.$http
-        .get(`${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/cart`)
+        .get(api)
         .then((res) => {
           this.cartData = res.data.data;
+        })
+        .catch((err) => {
+          alert(err.data.message);
         });
     },
   },
