@@ -1,7 +1,31 @@
 <template>
   <div class="container">
-    <h1>This is 產品列表頁面</h1>
     <Loading :active="isLoading" :z-index="1060"></Loading>
+
+    <h1>This is 產品列表頁面</h1>
+
+    <div class="container">
+      <div class="row row-cols-1 row-cols-lg-4 g-3">
+        <div class="col" v-for="product in products" :key="product.id">
+          <div class="card h-100">
+            <img :src="product.imageUrl" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <h5 class="card-title">{{ product.title }}</h5>
+              <p class="card-text">
+                {{ product.description }}
+              </p>
+              <router-link
+                :to="`/product/${product.id}`"
+                class="btn btn-primary"
+              >
+                Go somewhere
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <table class="table align-middle">
       <thead>
         <tr>
@@ -80,6 +104,7 @@
 <script>
 import Pagination from '@/components/Pagination.vue';
 import UserProductModal from '@/components/UserProductModal.vue';
+import emitter from '@/libs/emitter';
 
 export default {
   name: 'Products',
@@ -168,6 +193,9 @@ export default {
           if (res.data.success) {
             alert(res.data.message);
             this.hideModal();
+
+            // 發送 get-cart 事件，讓 FrontNavbar 知道
+            emitter.emit('get-cart');
 
             // 需要 loading 效果的商品 id，關閉效果
             this.loadingItem = '';

@@ -1,9 +1,10 @@
 <template>
-  <div class="about">
+  <div class="container">
     <Loading :active="isLoading"></Loading>
 
-    <!-- 購物車列表 start -->
     <h1>This is 購物車頁面</h1>
+
+    <!-- 購物車列表 start -->
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
@@ -170,6 +171,8 @@
 </template>
 
 <script>
+import emitter from '@/libs/emitter';
+
 export default {
   name: 'Cart',
   data() {
@@ -204,6 +207,9 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.cart = res.data.data;
+
+            // 發送 get-cart 事件，讓 FrontNavbar 知道
+            emitter.emit('get-cart');
           } else {
             alert(res.data.message);
           }
