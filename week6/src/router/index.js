@@ -21,6 +21,24 @@ const routes = [
         path: '/cart',
         component: () => import('../views/front/Cart.vue'),
       },
+      {
+        path: '/login',
+        component: () => import('../views/admin/Login.vue'),
+      },
+    ],
+  },
+  {
+    path: '/admin',
+    component: () => import('../views/admin/Dashboard.vue'),
+    children: [
+      {
+        path: 'products',
+        component: () => import('../views/admin/Products.vue'),
+      },
+      {
+        path: 'orders',
+        component: () => import('../views/admin/Orders.vue'),
+      },
     ],
   },
 ];
