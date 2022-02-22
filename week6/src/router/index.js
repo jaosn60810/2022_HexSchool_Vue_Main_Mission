@@ -21,11 +21,11 @@ const routes = [
         path: '/cart',
         component: () => import('../views/front/Cart.vue'),
       },
-      {
-        path: '/login',
-        component: () => import('../views/admin/Login.vue'),
-      },
     ],
+  },
+  {
+    path: '/login',
+    component: () => import('../views/admin/Login.vue'),
   },
   {
     path: '/admin',
