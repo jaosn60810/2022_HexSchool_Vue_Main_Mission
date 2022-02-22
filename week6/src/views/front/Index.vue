@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>This 首頁</h1>
+    <h1>This is very good 首頁</h1>
     <figure>
       <iframe
         width="560"
