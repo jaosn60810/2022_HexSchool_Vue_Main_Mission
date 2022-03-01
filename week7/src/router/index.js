@@ -7,10 +7,16 @@ const routes = [
 
     component: () => import('../views/Login.vue'),
   },
+  // 後台
   {
     path: '/admin',
-
     component: () => import('../views/Admin/DashBoard.vue'),
+    children: [
+      {
+        path: 'products',
+        component: () => import('../views/Admin/Products.vue'),
+      },
+    ],
   },
 ];
 

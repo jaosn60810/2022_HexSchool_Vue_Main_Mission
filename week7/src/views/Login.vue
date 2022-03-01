@@ -1,7 +1,6 @@
 <template>
   <div class="container mt-5">
     <Loading :active="isLoading" :z-index="1060"></Loading>
-    <ToastMessages></ToastMessages>
     <form class="row justify-content-center" @submit.prevent="signIn">
       <div class="col-md-6">
         <h1 class="h3 mb-3 font-weight-normal">請先登入</h1>
@@ -39,13 +38,7 @@
 </template>
 
 <script>
-import emitter from '@/methods/emitter';
-import ToastMessages from '@/components/ToastMessages.vue';
-
 export default {
-  components: {
-    ToastMessages,
-  },
   data() {
     return {
       isLoading: false,
@@ -55,11 +48,7 @@ export default {
       },
     };
   },
-  provide() {
-    return {
-      emitter,
-    };
-  },
+
   methods: {
     signIn() {
       this.isLoading = true;
@@ -68,12 +57,12 @@ export default {
       this.$http
         .post(api, this.user)
         .then((result) => {
-          const { token, expired } = result;
+          const { token, expired } = result.data;
           document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
-          this.$router.push('/admin');
+          this.$router.push('/admin/products');
         })
-        .catch((err) => {
-          this.$httpMessageState(err, '登入');
+        .catch((error) => {
+          this.$httpMessageState(error.response, '登入');
         })
         .finally(() => {
           this.isLoading = false;

@@ -14,7 +14,8 @@
         <span
           :class="`bg-${msg.style}`"
           class="p-2 rounded me-2 d-inline-block"
-        ></span>
+        >
+        </span>
         <strong class="me-auto">{{ msg.title }}</strong>
         <button
           type="button"
@@ -31,13 +32,14 @@
 </template>
 
 <script>
+import emitter from '@/methods/emitter';
+
 export default {
   data() {
     return {
       messages: [],
     };
   },
-  inject: ['emitter'],
   methods: {
     toastShow() {
       setTimeout(() => {
@@ -49,7 +51,7 @@ export default {
     },
   },
   mounted() {
-    this.emitter.on('push-message', (message) => {
+    emitter.on('push-message', (message) => {
       const { style = 'success', title, content } = message;
       this.messages.push({ style, title, content });
       this.toastShow();
