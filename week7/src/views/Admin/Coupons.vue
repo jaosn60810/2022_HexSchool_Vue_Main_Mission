@@ -48,6 +48,8 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :pages="pagination" @emit-pages="getCoupons"></Pagination>
+
     <CouponModal
       :coupon="tempCoupon"
       :is-new="isNew"
@@ -55,6 +57,7 @@
       @add-coupon="addCoupon"
       @edit-coupon="editCoupon"
     />
+
     <DelModal :item="tempCoupon" ref="delModal" @del-item="delCoupon" />
   </div>
 </template>
@@ -62,11 +65,13 @@
 <script>
 import CouponModal from '@/components/CouponModal.vue';
 import DelModal from '@/components/DelModal.vue';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   components: {
     CouponModal,
     DelModal,
+    Pagination,
   },
   data() {
     return {
@@ -74,6 +79,8 @@ export default {
       tempCoupon: {},
       isLoading: false,
       isNew: false,
+      pagination: {},
+      currentPage: 1,
     };
   },
   methods: {
@@ -105,14 +112,15 @@ export default {
       const delComponent = this.$refs.delModal;
       delComponent.openModal();
     },
-    getCoupons() {
+    getCoupons(page = 1) {
       this.isLoading = true;
 
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupons`;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/coupons?page=${page}`;
       this.$http
         .get(url, this.tempProduct)
         .then((result) => {
           this.coupons = result.data.coupons;
+          this.pagination = result.data.pagination;
         })
         .catch((error) => {
           this.$httpMessageState(error.response, '錯誤訊息');
