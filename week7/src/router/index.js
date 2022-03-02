@@ -16,6 +16,10 @@ const routes = [
         path: 'products',
         component: () => import('../views/Admin/Products.vue'),
       },
+      {
+        path: 'orders',
+        component: () => import('../views/Admin/Orders.vue'),
+      },
     ],
   },
 ];
@@ -23,6 +27,7 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  linkActiveClass: 'active',
 });
 
 export default router;
