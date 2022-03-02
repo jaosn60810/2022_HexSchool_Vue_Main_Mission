@@ -26,6 +26,11 @@ const routes = [
       },
     ],
   },
+  // 重新導回登入頁面
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: { name: 'Login' },
+  },
 ];
 
 const router = createRouter({
