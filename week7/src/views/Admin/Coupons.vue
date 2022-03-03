@@ -86,6 +86,7 @@ export default {
   methods: {
     openCouponModal(isNew, item) {
       this.isNew = isNew;
+
       // 新增優惠券
       if (this.isNew) {
         // 新增優惠卷預設值

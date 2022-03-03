@@ -14,6 +14,9 @@ import $httpMessageState from '@/methods/pushMessageState';
 // filters
 import { date, currency } from './methods/filters';
 
+// CKEditor
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
 import App from './App.vue';
 import router from './router';
 
@@ -30,6 +33,7 @@ app.config.globalProperties.$httpMessageState = $httpMessageState;
 
 app.use(router);
 app.use(VueAxios, axios);
+app.use(CKEditor);
 
 app.component('Loading', Loading);
 

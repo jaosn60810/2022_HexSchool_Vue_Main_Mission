@@ -24,6 +24,10 @@ const routes = [
         path: 'coupons',
         component: () => import('../views/Admin/Coupons.vue'),
       },
+      {
+        path: 'article',
+        component: () => import('../views/Admin/Article.vue'),
+      },
     ],
   },
   // 重新導回登入頁面
