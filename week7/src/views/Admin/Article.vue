@@ -105,20 +105,24 @@ export default {
         });
     },
     getArticle(id) {
-      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${id}`;
       this.isLoading = true;
+
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/article/${id}`;
       this.$http
         .get(api)
-        .then((response) => {
-          this.isLoading = false;
-          if (response.data.success) {
-            this.openModal(false, response.data.article);
-            this.isNew = false;
+        .then((result) => {
+          if (result.data.success) {
+            this.openModal(false, result.data.article);
           }
         })
         .catch((error) => {
           // axios 的錯誤狀態，可參考：https://github.com/axios/axios#handling-errors
-          console.log('error', error.response, error.request, error.message);
+
+          this.$httpMessageState(error.response, '錯誤訊息');
+          this.$httpMessageState(error.request, '錯誤訊息');
+          this.$httpMessageState(error.message, '錯誤訊息');
+        })
+        .finally(() => {
           this.isLoading = false;
         });
     },
