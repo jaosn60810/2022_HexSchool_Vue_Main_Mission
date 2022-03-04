@@ -8,6 +8,9 @@ import VueAxios from 'vue-axios';
 import Loading from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 
+//bootstrap
+import 'bootstrap';
+
 // toast
 import $httpMessageState from '@/methods/pushMessageState';
 
